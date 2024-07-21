@@ -14,8 +14,7 @@ function App() {
       
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/my_special_shrimp" element={<Home/>} />
-        <Route path="my_special_shrimp" element={<Test/>} />
+        
         <Route path="Test" element={<Test/>} />
       </Routes>
      
