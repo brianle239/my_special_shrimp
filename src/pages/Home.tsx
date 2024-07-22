@@ -5,6 +5,7 @@ export default function Home() {
         <div>
             Yes
             <Link to="Test"> Test </Link>
+            <Link to="Game1"> Game1 </Link>
         </div>
     )
 }

@@ -6,12 +6,14 @@
     padding: 0;
     justify-content: center;
     display: flex;
+    position: absolute;
     margin: 0;
+    top: 0;
+    left: 25%;
 }
 
 .card {
     /* position: fixed; */
-    position: fixed;
     padding: 0;
     margin: 0;
     background-color: beige;
@@ -22,4 +24,9 @@
     /* Disables transitions */
     /* animation: none; */
     /* Disables animations */
+}
+
+.swap {
+    position: fixed;
+    top: 90svh;
 }

@@ -1,5 +1,5 @@
 import './Test.css'
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useLayoutEffect } from 'react';
 
 
 
@@ -13,8 +13,8 @@ export default function Test() {
     const parentRef = useRef<HTMLDivElement>(null);
     const [parentRendered, setParentRendered] = useState(false);
     const [integerPairs, setIntegerPairs] = useState(Array(16).fill([0, 0]));
-    const divRefs = Array.from({ length: 16 }, () => useRef<HTMLDivElement>(null));
-
+    const [divRefs, setDivRefs] = useState(Array.from({ length: 16 }, () => useRef(null)));
+    const [hasSwapped, setHasSwapped] = useState(false);
    
     function getViewportDimensions(): { vh: number; vw: number } {
         const vh = window.innerHeight * 0.01;
@@ -47,10 +47,57 @@ export default function Test() {
         for (let i=0; i < tempPos.length; i++) {
             tempPos[i] = [(i%4)*12.5 + parentLeft, Math.floor(i/4)*15 + parentTop]
         }
+        console.log("yes")
         setIntegerPairs(tempPos)
+        return integerPairs
         
         // return {left: `${(index%4)*210 + parentLeft}px`, top: `${Math.floor(index/4)*100 + parentTop}px`}
     
+    }
+
+    function changeCard() {
+        console.log("nope")
+        let copydivRefs = divRefs.map((ref) => ref);
+        for (let i=0; i < text.length; i++) {
+            if (copydivRefs[i].current) {
+                console.log(i)
+                const tl = copydivRefs[i].current?.getBoundingClientRect().x;
+                const tt = copydivRefs[i].current?.getBoundingClientRect().y;
+                console.log(copydivRefs[i].current?.getBoundingClientRect())
+                copydivRefs[i].current.style.left = tt;
+                someAsyncOperation(copydivRefs, (processedData) => {
+                    copydivRefs[i].current.style = `position: fixed; left: ${tl}px; top: ${tt}px; transition: 0s`;
+                    // copydivRefs[i].current.style.position = 'fixed';
+                    // copydivRefs[i].current.style.left = `${tl}px`;
+                    // copydivRefs[i].current.style.top = `${tt}px`;
+                });
+                
+            
+            }            
+        }
+        setDivRefs(copydivRefs)
+    }
+
+    function revertCard() {
+        let copydivRefs = divRefs.map((ref) => ref);
+        for (let i=0; i < text.length; i++) {
+            if (copydivRefs[i].current) {
+                console.log(i)
+                const tl = copydivRefs[i].current?.getBoundingClientRect().x;
+                const tt = copydivRefs[i].current?.getBoundingClientRect().y;
+                console.log(copydivRefs[i].current?.getBoundingClientRect())
+                copydivRefs[i].current.style.left = tt;
+                someAsyncOperation(copydivRefs, (processedData) => {
+                    copydivRefs[i].current.style.position = 'relative';
+                    // copydivRefs[i].current.style.position = 'fixed';
+                    // copydivRefs[i].current.style.left = `${tl}px`;
+                    // copydivRefs[i].current.style.top = `${tt}px`;
+                });
+                
+            
+            }            
+        }
+        setDivRefs(copydivRefs)
     }
     function handleClick() {
         if (parentRef.current && divRefs[0].current !== null && divRefs[14].current) {
@@ -72,52 +119,99 @@ export default function Test() {
         }
         
     }
+
+    function someAsyncOperation(data, callback) {
+    // Simulate asynchronous operation
+    setTimeout(() => {
+        callback(data); // Call the provided callback after a delay
+    },  1);
+    }
+
     function swap() {
+        console.log(divRefs)
+        console.log("yes", divRefs[0].current.style.top)
         let tempTop = divRefs[0]?.current?.style.top
         let tempLeft = divRefs[0]?.current?.style.left
+        console.log("no")
 
-        console.log(tempTop, divRefs[0]?.current?.style.top, divRefs[13].current.style.top)
+        console.log(divRefs[0]?.current?.style.top, divRefs[13].current.style.top)
         divRefs[0].current.style.top = divRefs[13].current.style.top
         divRefs[0].current.style.left = divRefs[13].current.style.left
+        divRefs[0].current.style.transition ='1s';
 
         divRefs[13].current.style.top = tempTop
-        divRefs[13].current.style.left = tempLeft
-        // divRefs[1].current.style.order = 13;
-        // divRefs[13].current.style.order = 1;
-        console.log("yes")
+        divRefs[13].current.style.left =tempLeft
+        divRefs[13].current.style.transition ='1s';
+        console.log(divRefs[0]?.current?.style.top, divRefs[13].current.style.top)
+        console.log("finished")
+
+        setTimeout(() => {
+            setHasSwapped(true);
+        }, 5000);
+        
         
     }
+
+
+    const place = async () => {
+        await placeCard()
+
+        changeCard()
+    }
+      
+
     useEffect(() => {
         if (parentRef.current) {
           // Parent div has been rendered and attached to the DOM
           setParentRendered(true);
-          placeCard()
+          console.log("Parent rendered")
+          
+          
         }
       }, []);
 
-    //   useEffect(() => {
-    //     const handleResize = () => placeCard();
-    //     window.addEventListener('resize', handleResize);
+      useLayoutEffect(() => {
+        
+        place()
+            
+        if (divRefs[15].current) {
+            // Parent div has been rendered and attached to the DO
+            console.log("divRef is present")
+            
+        }
+        else {
+            console.log("divref not render")
+        }
+      }, []);
+
+      useEffect(() => {
+        if (hasSwapped == true) {
+            revertCard();
+            setHasSwapped(false);
+        }
+
+        
+        
+      }, [hasSwapped]);
+      
+
     
-    //     return () => window.removeEventListener('resize', handleResize);
-    //   }, []);
-    
-    
-    // window.onload = createDivRefs;
+    // window.onload = changeCard;
     return (
         <>
         <div className='board' ref={parentRef}>
-        {parentRendered && divRefs.map((ref, index) => (
-            // {order: `${index}`}
-                <div className='card' key={index} ref={ref} style={{left: `${integerPairs[index][0]}svw`, top: `${integerPairs[index][1]}svh`}}>
-                    {text[index]}.
-                </div>
+            {parentRendered && divRefs.map((ref, index) => (
+                // {order: `${index}`}
+                // {left: `${integerPairs[index][0]}svw`, top: `${integerPairs[index][1]}svh`}
+                    <div className='card' key={index} ref={ref} >
+                        {text[index]}.
+                    </div>
             ))}
         </div>
         
         
         <div onClick={handleClick}>Yes</div>
-        <div onClick={swap} style={{backgroundColor: "Blue", width:"100px"}}>swap</div>
+        <div className="swap" onClick={swap} style={{backgroundColor: "Blue", width:"100px"}}>swap</div>
         </>
         
     )
