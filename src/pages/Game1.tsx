@@ -10,13 +10,16 @@ export default function Game1() {
         "goup3.1", "group3.2", "group3.3", "group3.4",
         "goup4.1", "group4.2", "group4.3", "group4.4"]
 
-    const groups: string[][] = [["goup1.1", "group1.2", "group1.3", "group1.4"], ["goup2.1", "group2.2", "group2.3", "group2.4"]] 
+    const groups: string[][] = [["goup1.1", "group1.2", "group1.3", "group1.4"], ["goup2.1", "group2.2", "group2.3", "group2.4"], ["goup3.1", "group3.2", "group3.3", "group3.4"], ["goup4.1", "group4.2", "group4.3", "group4.4"]] 
     const [divRefs, setDivRefs] = useState(Array.from({ length: 16 }, () => useRef(null)));
-    const [bigGroup, setBigGroup] = useState(false);
+    const [bigGroup, setBigGroup] = useState(Array.from({ length: 4 }, () => false));
+    const [totalGroup, setTotalGroup] = useState(0);
 
     const switchPositions = (index1, index2) => {
         const box1 = divRefs[index1].current;
         const box2 = divRefs[index2].current;
+
+        console.log("switching", box1.innerText, " with ", box2.innerText);
 
         const box1Key = box1.id;
         const box2Key = box2.id;
@@ -46,23 +49,40 @@ export default function Game1() {
         
     }
 
-    const reOrder = (clickedIndicies: number[]) => {
+    const reOrder = (clickedIndicies: number[], groupNum: number) => {
         let indicies: number[] = [];
         const startIndex = 0;
+        const currentRow = totalGroup 
         for (let i = 0; i < divRefs.length; i++) {
-            if (divRefs[i].current && Math.floor(Number(divRefs[i].current.id)/4) == 0) {
+            if (divRefs[i].current && Math.floor(Number(divRefs[i].current.id)/4) == currentRow) {
                 indicies.push(i);
+                console.log("pushing id",  divRefs[i].current.id);
+
             }
         }
+        let findicies = indicies.filter(element => !clickedIndicies.includes(element));
+        let fclickedIndicies = clickedIndicies.filter(element => !indicies.includes(element));
+        console.log("swapping", findicies)
         for (let j = 0; j < clickedIndicies.length; j++) {
-            switchPositions(indicies[j], clickedIndicies[j]);
+            if (findicies[j] != fclickedIndicies[j]) {
+                console.log("swap", fclickedIndicies[j], findicies[j])
+                switchPositions(fclickedIndicies[j], findicies[j]);
+            }
+            
         }
         const timeoutId = setTimeout(() => {
-           
-            for (let k = 0; k < 4; k++) {
-                divRefs[k].current.remove();         
+            const tempDivRefs = divRefs
+            for (let k = groupNum*4; k < groupNum*4+4; k++) {
+                tempDivRefs[k].current.remove(); 
+                tempDivRefs[k].current = null;  
+                   
             }
-            setBigGroup(true);
+            setDivRefs(tempDivRefs);
+            setTotalGroup(currentRow+1);
+            const tempBigGroup = bigGroup;
+            tempBigGroup[groupNum] = true;
+            setBigGroup(tempBigGroup);
+            setClickedTotal(0);
 
         }, 1000);
         return () => clearTimeout(timeoutId);
@@ -93,10 +113,12 @@ export default function Game1() {
         clicked = clicked.sort()
         for (let j = 0; j < groups.length; j++) {
             let sortedGroup = groups[j].sort();
-            console.log(sortedGroup)
             if (sortedGroup.every((element, index) => element === clicked[index])) {
-                console.log("group 1");
-                reOrder(clickedIndicies);
+                // console.log("group 1");
+                console.log("reorder")
+                clickedIndicies = clickedIndicies.sort()
+                reOrder(clickedIndicies, j);
+                break;
             }
         }
     }
@@ -116,7 +138,10 @@ export default function Game1() {
                     {text[index]}
                 </div>
         ))}
-        {bigGroup && <div className='bigCard'>GROUP 1</div>}
+        {bigGroup[0] && <div className='bigCard'>GROUP 1</div>}
+        {bigGroup[1] && <div className='bigCard'>GROUP 2</div>}
+        {bigGroup[2] && <div className='bigCard'>GROUP 3</div>}
+        {bigGroup[3] && <div className='bigCard'>GROUP 4</div>}
        
 
     </div>
