@@ -11,8 +11,11 @@ export default function Game1() {
         "goup4.1", "group4.2", "group4.3", "group4.4"]
 
     const groups: string[][] = [["goup1.1", "group1.2", "group1.3", "group1.4"], ["goup2.1", "group2.2", "group2.3", "group2.4"], ["goup3.1", "group3.2", "group3.3", "group3.4"], ["goup4.1", "group4.2", "group4.3", "group4.4"]] 
+    const [parent, setParent] = useState(useRef(null));
     const [divRefs, setDivRefs] = useState(Array.from({ length: 16 }, () => useRef(null)));
+    
     const [bigGroup, setBigGroup] = useState(Array.from({ length: 4 }, () => false));
+    const [bigGroupRef, setBigGroupRef] = useState(Array.from({ length: 4 }, () => useRef(null)));
     const [totalGroup, setTotalGroup] = useState(0);
 
     const switchPositions = (index1, index2) => {
@@ -82,7 +85,15 @@ export default function Game1() {
             const tempBigGroup = bigGroup;
             tempBigGroup[groupNum] = true;
             setBigGroup(tempBigGroup);
+            // parent.current.appendChild("<div> hi </div>");
+            // bigGroupRef[groupNum].current.style.top = `${groupNum*100}px`;
             setClickedTotal(0);
+
+            const t = setTimeout(() => {
+                // bigGroupRef[groupNum].current.order = currentRow-1;
+                bigGroupRef[groupNum].current.style.top = `${(currentRow)*100}px`;
+            }, 10
+            );
 
         }, 1000);
         return () => clearTimeout(timeoutId);
@@ -98,6 +109,16 @@ export default function Game1() {
         }
         console.log(shuffledArray)
         setDivRefs(shuffledArray);
+    }
+
+    const deselect = () => {
+        for (let i = 0; i < divRefs.length; i++) {
+            if (divRefs[i].current && divRefs[i].current.className.indexOf(' box_clicked') > 0) {
+                let classIndex = divRefs[i].current.className.indexOf(' box_clicked');
+                divRefs[i].current.className = divRefs[i].current.className.slice(0, classIndex);
+            }
+        }
+        setClickedTotal(0);
     }
 
     const submit = () => {
@@ -128,26 +149,64 @@ export default function Game1() {
         console.log("shuffle array")
     }, []);
 
+
   return (
     <>
-    <div className="container">
+    <div className='title'>
+        Spicy Connections
+    </div>
+    <div className='subtext'>
+        Make Groups of 4
+    </div>
+    <div className="container" ref={parent}>
         
         {divRefs.map((ref, index) => (
             
-                <div className='box' id={`${index}`} key={index} ref={ref} onClick={() => highlight(ref)} style={{left: `${index%4*120}px`, top: `${Math.floor(index/4)*60}px`}} >
+                <div className='box' id={`${index}`} key={index} ref={ref} onClick={() => highlight(ref)} style={{left: `${index%4*200}px`, top: `${Math.floor(index/4)*100}px`}} >
                     {text[index]}
                 </div>
         ))}
-        {bigGroup[0] && <div className='bigCard'>GROUP 1</div>}
-        {bigGroup[1] && <div className='bigCard'>GROUP 2</div>}
-        {bigGroup[2] && <div className='bigCard'>GROUP 3</div>}
-        {bigGroup[3] && <div className='bigCard'>GROUP 4</div>}
+        {bigGroup[0] && <div className='bigCard group1' ref={bigGroupRef[0]}>
+            <div className='bigCardName'>
+                Group 1
+            </div>
+            <div className='bigCardValue'>
+                {groups[0].join(", ")}
+            </div>
+        </div>}
+        {bigGroup[1] && <div className='bigCard group2' ref={bigGroupRef[1]}>
+        <div className='bigCardName'>
+                Group 2
+            </div>
+            <div className='bigCardValue'>
+                {groups[1].join(", ")}
+            </div>
+        </div>}
+        {bigGroup[2] && <div className='bigCard group3' ref={bigGroupRef[2]}>
+        <div className='bigCardName'>
+                Group 3
+            </div>
+            <div className='bigCardValue'>
+                {groups[2].join(", ")}
+            </div>
+        </div>}
+        {bigGroup[3] && <div className='bigCard group4' ref={bigGroupRef[3]}>
+        <div className='bigCardName'>
+                Group 4
+            </div>
+            <div className='bigCardValue'>
+                {groups[3].join(", ")}
+            </div>
+        </div>}
        
 
     </div>
-    <button className='b' onClick={() => switchPositions(0, 1)}>Switch Positions</button>
-    <button className='submit' onClick={() => submit()}>Submit</button>
-    <button className='shuffle' onClick={() => shuffle()}>Shuffle</button>
+    <div className='mainButtons'>
+        <button className='shuffle' onClick={() => shuffle()}>Shuffle</button>
+        <button className='deselect' onClick={() => deselect()}>Deselect All</button>
+        <button className='submit' onClick={() => submit()}>Submit</button>
+    </div>
+    
     </>
 
   );
