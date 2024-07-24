@@ -82,14 +82,13 @@ export default function Game1() {
             setBigGroup(tempBigGroup);
             setClickedTotal(0);
 
-            const t = setTimeout(() => {
+            setTimeout(() => {
                 let bigGroupCurrentRef = bigGroupRef[groupNum].current as HTMLDivElement | null
                 if (bigGroupCurrentRef) {
                     bigGroupCurrentRef.style.top = `${(currentRow)*100}px`;
                 }
                 
-            }, 10);
-            clearTimeout(t);
+            }, 50);
         }, 1000);
         return () => clearTimeout(timeoutId);
 
