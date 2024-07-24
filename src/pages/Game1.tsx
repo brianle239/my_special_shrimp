@@ -49,7 +49,19 @@ export default function Game1() {
             }
         }
     }
-
+    const placeBigGroup = (groupNum: number, currentRow: number) => {
+        setTimeout(() => {
+            let bigGroupCurrentRef = bigGroupRef[groupNum].current as HTMLDivElement | null
+            if (bigGroupCurrentRef) {
+                bigGroupCurrentRef.style.top = `${(currentRow)*100}px`;
+                return;
+            }
+            else {
+                placeBigGroup(groupNum, currentRow);
+            }
+            
+        }, 20);
+    }
     const reOrder = (clickedIndicies: number[], groupNum: number) => {
         console.log("reorder")
         let indicies: number[] = [];
@@ -82,13 +94,7 @@ export default function Game1() {
             setBigGroup(tempBigGroup);
             setClickedTotal(0);
 
-            setTimeout(() => {
-                let bigGroupCurrentRef = bigGroupRef[groupNum].current as HTMLDivElement | null
-                if (bigGroupCurrentRef) {
-                    bigGroupCurrentRef.style.top = `${(currentRow)*100}px`;
-                }
-                
-            }, 50);
+            placeBigGroup(groupNum, currentRow);
         }, 1000);
         return () => clearTimeout(timeoutId);
 
