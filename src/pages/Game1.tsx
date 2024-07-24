@@ -1,5 +1,5 @@
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import './Game1.css';
 export default function Game1() {
         
@@ -11,34 +11,34 @@ export default function Game1() {
         "goup4.1", "group4.2", "group4.3", "group4.4"]
 
     const groups: string[][] = [["goup1.1", "group1.2", "group1.3", "group1.4"], ["goup2.1", "group2.2", "group2.3", "group2.4"], ["goup3.1", "group3.2", "group3.3", "group3.4"], ["goup4.1", "group4.2", "group4.3", "group4.4"]] 
-    const [parent, setParent] = useState(useRef(null));
+    const parent = useRef(null);
     const [divRefs, setDivRefs] = useState(Array.from({ length: 16 }, () => useRef(null)));
     
     const [bigGroup, setBigGroup] = useState(Array.from({ length: 4 }, () => false));
-    const [bigGroupRef, setBigGroupRef] = useState(Array.from({ length: 4 }, () => useRef(null)));
+    const bigGroupRef = Array.from({ length: 4 }, () => useRef(null));
     const [totalGroup, setTotalGroup] = useState(0);
 
-    const switchPositions = (index1, index2) => {
-        const box1 = divRefs[index1].current;
-        const box2 = divRefs[index2].current;
+    const switchPositions = (index1: number, index2: number) => {
+        const box1 = divRefs[index1].current as HTMLDivElement | null;
+        const box2 = divRefs[index2].current as HTMLDivElement | null;
 
-        console.log("switching", box1.innerText, " with ", box2.innerText);
-
-        const box1Key = box1.id;
-        const box2Key = box2.id;
-        const box1Offset = { left: box1.style.left, top: box1.style.top };
-        const box2Offset = { left: box2.style.left, top: box2.style.top };
-        box1.style.left = box2Offset.left;
-        box2.style.left = box1Offset.left;
-        box1.style.top = box2Offset.top;
-        box2.style.top = box1Offset.top;
-        box1.id = box2Key;
-        box2.id = box1Key;
+        if (box1 && box2) {
+            const box1Key = box1.id;
+            const box2Key = box2.id;
+            const box1Offset = { left: box1.style.left, top: box1.style.top };
+            const box2Offset = { left: box2.style.left, top: box2.style.top };
+            box1.style.left = box2Offset.left;
+            box2.style.left = box1Offset.left;
+            box1.style.top = box2Offset.top;
+            box2.style.top = box1Offset.top;
+            box1.id = box2Key;
+            box2.id = box1Key;
+        }    
     };
 
-
     const highlight = (ref: React.Ref<HTMLDivElement>) => {
-        if (ref && ref.current) {
+        
+        if (ref && typeof ref !== 'function' && ref.current) {
             if (ref.current.className.indexOf(' box_clicked') > 0) {
                 ref.current.className = ref.current.className.replace(' box_clicked', '');
                 setClickedTotal(clickedTotal-1)
@@ -47,37 +47,34 @@ export default function Game1() {
                 ref.current.className += ' box_clicked';
                 setClickedTotal(clickedTotal+1)
             }
-            
         }
-        
     }
 
     const reOrder = (clickedIndicies: number[], groupNum: number) => {
         let indicies: number[] = [];
-        const startIndex = 0;
         const currentRow = totalGroup 
         for (let i = 0; i < divRefs.length; i++) {
-            if (divRefs[i].current && Math.floor(Number(divRefs[i].current.id)/4) == currentRow) {
+            const currentRef = divRefs[i].current as HTMLDivElement | null;
+            if (currentRef && Math.floor(Number(currentRef.id)/4) == currentRow) {
                 indicies.push(i);
-                console.log("pushing id",  divRefs[i].current.id);
-
             }
         }
         let findicies = indicies.filter(element => !clickedIndicies.includes(element));
         let fclickedIndicies = clickedIndicies.filter(element => !indicies.includes(element));
-        console.log("swapping", findicies)
         for (let j = 0; j < clickedIndicies.length; j++) {
             if (findicies[j] != fclickedIndicies[j]) {
-                console.log("swap", fclickedIndicies[j], findicies[j])
                 switchPositions(fclickedIndicies[j], findicies[j]);
-            }
-            
+            }  
         }
         const timeoutId = setTimeout(() => {
             const tempDivRefs = divRefs
             for (let k = groupNum*4; k < groupNum*4+4; k++) {
-                tempDivRefs[k].current.remove(); 
-                tempDivRefs[k].current = null;  
+                let currentRef =tempDivRefs[k].current as HTMLDivElement | null;
+                if (currentRef) {
+                    currentRef.remove(); 
+                    currentRef = null;  
+                }
+                
                    
             }
             setDivRefs(tempDivRefs);
@@ -85,16 +82,16 @@ export default function Game1() {
             const tempBigGroup = bigGroup;
             tempBigGroup[groupNum] = true;
             setBigGroup(tempBigGroup);
-            // parent.current.appendChild("<div> hi </div>");
-            // bigGroupRef[groupNum].current.style.top = `${groupNum*100}px`;
             setClickedTotal(0);
 
             const t = setTimeout(() => {
-                // bigGroupRef[groupNum].current.order = currentRow-1;
-                bigGroupRef[groupNum].current.style.top = `${(currentRow)*100}px`;
-            }, 10
-            );
-
+                let bigGroupCurrentRef = bigGroupRef[groupNum].current as HTMLDivElement | null
+                if (bigGroupCurrentRef) {
+                    bigGroupCurrentRef.style.top = `${(currentRow)*100}px`;
+                }
+                
+            }, 10);
+            clearTimeout(t);
         }, 1000);
         return () => clearTimeout(timeoutId);
 
@@ -107,15 +104,15 @@ export default function Game1() {
             switchPositions(i, j)
         //   [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]; // Swap elements
         }
-        console.log(shuffledArray)
         setDivRefs(shuffledArray);
     }
 
     const deselect = () => {
         for (let i = 0; i < divRefs.length; i++) {
-            if (divRefs[i].current && divRefs[i].current.className.indexOf(' box_clicked') > 0) {
-                let classIndex = divRefs[i].current.className.indexOf(' box_clicked');
-                divRefs[i].current.className = divRefs[i].current.className.slice(0, classIndex);
+            const currentRef = divRefs[i].current as HTMLDivElement | null;
+            if (currentRef && currentRef.className.indexOf(' box_clicked') > 0) {
+                let classIndex = currentRef.className.indexOf(' box_clicked');
+                currentRef.className = currentRef.className.slice(0, classIndex);
             }
         }
         setClickedTotal(0);
@@ -125,10 +122,12 @@ export default function Game1() {
         let clicked = []
         let clickedIndicies = []
         for (let i = 0; i < divRefs.length; i++) {
-            if (divRefs[i].current && divRefs[i].current.className.indexOf(' box_clicked') > 0) {
-                clicked.push(divRefs[i].current.innerText)
+            const currentRef = divRefs[i].current as HTMLDivElement | null;
+            if (currentRef && currentRef.className.indexOf(' box_clicked') > 0) {
+                clicked.push(currentRef.innerText)
                 clickedIndicies.push(i)
             }
+            
         }
         console.log(clicked)
         clicked = clicked.sort()
