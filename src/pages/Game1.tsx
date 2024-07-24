@@ -51,6 +51,7 @@ export default function Game1() {
     }
 
     const reOrder = (clickedIndicies: number[], groupNum: number) => {
+        console.log("reorder")
         let indicies: number[] = [];
         const currentRow = totalGroup 
         for (let i = 0; i < divRefs.length; i++) {
@@ -67,17 +68,14 @@ export default function Game1() {
             }  
         }
         const timeoutId = setTimeout(() => {
-            const tempDivRefs = divRefs
             for (let k = groupNum*4; k < groupNum*4+4; k++) {
-                let currentRef =tempDivRefs[k].current as HTMLDivElement | null;
+                let currentRef = divRefs[k].current as HTMLDivElement | null;
                 if (currentRef) {
                     currentRef.remove(); 
-                    currentRef = null;  
+                    divRefs[k].current = null;  
                 }
-                
-                   
+                              
             }
-            setDivRefs(tempDivRefs);
             setTotalGroup(currentRow+1);
             const tempBigGroup = bigGroup;
             tempBigGroup[groupNum] = true;
@@ -137,6 +135,7 @@ export default function Game1() {
                 // console.log("group 1");
                 console.log("reorder")
                 clickedIndicies = clickedIndicies.sort()
+                console.log(clickedIndicies, j)
                 reOrder(clickedIndicies, j);
                 break;
             }
