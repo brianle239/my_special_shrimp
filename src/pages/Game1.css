@@ -107,3 +107,40 @@
 .group4 {
     background-color: #BA81C5;
 }
+
+.up_and_down {
+    offset: path('M 95 45 L 95 35 L 95 45');
+    offset-rotate: 0deg;
+    animation: moveImgUD .5s 0s 1;
+}
+
+@keyframes moveImgUD {
+    100% {
+        offset-distance: 100%;
+    }
+}
+
+.left_and_right {
+    offset: path('M 95 45 L 100 45 L 95 45 L 90 45 L 95 45');
+    offset-rotate: 0deg;
+    animation: moveImgLR .2s linear 1;
+}
+
+@keyframes moveImgLR {
+    100% {
+        offset-distance: 100%;
+    }
+}
+
+
+/* @keyframes blur_and_back {
+0% {
+    filter: blur(0);
+}
+50% {
+    filter: blur(0.72em);
+}
+100% {
+    filter: blur(0);
+}
+} */

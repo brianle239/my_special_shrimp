@@ -124,27 +124,50 @@ export default function Game1() {
     const submit = () => {
         let clicked = []
         let clickedIndicies = []
+        let count = 0
         for (let i = 0; i < divRefs.length; i++) {
             const currentRef = divRefs[i].current as HTMLDivElement | null;
             if (currentRef && currentRef.className.indexOf(' box_clicked') > 0) {
                 clicked.push(currentRef.innerText)
-                clickedIndicies.push(i)
+                clickedIndicies.push(i);
+                setTimeout(() => {
+                    console.log(i)
+                    currentRef.classList.add("up_and_down");
+                    currentRef.offsetWidth;
+                    setTimeout(() => {
+                        currentRef.classList.remove("up_and_down");
+
+                    }, 500);
+                }, count*150);
+                count += 1;
             }
             
         }
-        console.log(clicked)
-        clicked = clicked.sort()
-        for (let j = 0; j < groups.length; j++) {
-            let sortedGroup = groups[j].sort();
-            if (sortedGroup.every((element, index) => element === clicked[index])) {
-                // console.log("group 1");
-                console.log("reorder")
-                clickedIndicies = clickedIndicies.sort()
-                console.log(clickedIndicies, j)
-                reOrder(clickedIndicies, j);
-                break;
+        setTimeout(() => {
+            let found = false;
+            for (let j = 0; j < groups.length; j++) {
+                let sortedGroup = groups[j].sort();
+                if (sortedGroup.every((element, index) => element === clicked[index])) {
+                    found = true;
+                    reOrder(clickedIndicies, j);
+                    break;
+                }
             }
-        }
+
+            if (found == false) {
+                for (let i = 0; i < clickedIndicies.length; i++) {
+                    const currentRef = divRefs[clickedIndicies[i]].current as HTMLDivElement | null;
+                    if (currentRef) {
+                        currentRef.classList.add("left_and_right");
+                        currentRef.offsetWidth;
+                        setTimeout(() => {
+                            currentRef.classList.remove("left_and_right");
+                        }, 200);
+                    }
+                }       
+            }
+
+        }, 1100);
     }
 
     useLayoutEffect(() => {
