@@ -133,7 +133,6 @@ export default function Game1() {
                 clicked.push(currentRef.innerText)
                 clickedIndicies.push(i);
                 setTimeout(() => {
-                    console.log(i)
                     currentRef.classList.add("up_and_down");
                     currentRef.offsetWidth;
                     setTimeout(() => {
@@ -145,10 +144,14 @@ export default function Game1() {
             }
             
         }
+        
+        console.log(clickedIndicies)
         setTimeout(() => {
+            
             let found = false;
             for (let j = 0; j < groups.length; j++) {
-                let sortedGroup = groups[j].sort();
+                let sortedGroup = groups[j];
+                console.log(groups[j], clicked)
                 if (sortedGroup.every((element, index) => element === clicked[index])) {
                     found = true;
                     reOrder(clickedIndicies, j);
