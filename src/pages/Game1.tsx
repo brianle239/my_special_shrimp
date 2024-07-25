@@ -5,12 +5,14 @@ export default function Game1() {
         
     const [clickedTotal, setClickedTotal] = useState(0);
 
-    const text: string[] = ["goup1.1", "group1.2", "group1.3", "group1.4", 
-        "goup2.1", "group2.2", "group2.3", "group2.4",
-        "goup3.1", "group3.2", "group3.3", "group3.4",
-        "goup4.1", "group4.2", "group4.3", "group4.4"]
+    const text: string[] = [
+        "Good", "Night", "Sweet", "Dreams",
+        "Shrimp", "Lettuce", "Chilies", "Beef", 
+        "Santa Cruz", "Skeleton", "My Melody", "Spy X Family",
+        "Cute", "Perfect", "Pookie", "Warm"
+    ]
 
-    const groups: string[][] = [["goup1.1", "group1.2", "group1.3", "group1.4"], ["goup2.1", "group2.2", "group2.3", "group2.4"], ["goup3.1", "group3.2", "group3.3", "group3.4"], ["goup4.1", "group4.2", "group4.3", "group4.4"]] 
+    const groups: string[][] = [["Good", "Night", "Sweet", "Dreams"], ["Shrimp", "Lettuce", "Chilies", "Beef"], ["Santa Cruz", "Skeleton", "My Melody", "Spy X Family"], ["Cute", "Perfect", "Pookie", "Warm"]] 
     const parent = useRef(null);
     const [divRefs, setDivRefs] = useState(Array.from({ length: 16 }, () => useRef(null)));
     
@@ -194,7 +196,7 @@ export default function Game1() {
         ))}
         {bigGroup[0] && <div className='bigCard group1' ref={bigGroupRef[0]}>
             <div className='bigCardName'>
-                Group 1
+                Going to Bed
             </div>
             <div className='bigCardValue'>
                 {groups[0].join(", ")}
@@ -202,7 +204,7 @@ export default function Game1() {
         </div>}
         {bigGroup[1] && <div className='bigCard group2' ref={bigGroupRef[1]}>
         <div className='bigCardName'>
-                Group 2
+                Hot Pot Ingredients
             </div>
             <div className='bigCardValue'>
                 {groups[1].join(", ")}
@@ -210,7 +212,7 @@ export default function Game1() {
         </div>}
         {bigGroup[2] && <div className='bigCard group3' ref={bigGroupRef[2]}>
         <div className='bigCardName'>
-                Group 3
+                T-Shirts
             </div>
             <div className='bigCardValue'>
                 {groups[2].join(", ")}
@@ -218,7 +220,7 @@ export default function Game1() {
         </div>}
         {bigGroup[3] && <div className='bigCard group4' ref={bigGroupRef[3]}>
         <div className='bigCardName'>
-                Group 4
+                You 🍤
             </div>
             <div className='bigCardValue'>
                 {groups[3].join(", ")}
