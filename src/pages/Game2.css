@@ -1,0 +1,18 @@
+.progress-bar-container {
+    width: 200px;
+    /* Adjust width as needed */
+    height: 20px;
+    background-color: #d11515;
+    /* Background color for the empty part */
+    border-radius: 5px;
+    padding: 0;
+    margin: 0 auto;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    /* Color for the filled part */
+    width: 50%;
+    /* Set to 50% for 50% filled */
+}
