@@ -101,7 +101,7 @@ const Game2 = () => {
       <div>
         <button onClick={startListening} disabled={listening}>Start Listening</button>
         <button onClick={stopListening} disabled={!listening}>Stop Listening</button>
-        <p>{listening ? 'Listening...' : 'Click "Start Listening" to begin'}</p>
+        <p>{listening ? 'Listening (Bark, Meow, or Quack)' : 'Click "Start Listening" to begin'}</p>
         <p>Last Word: {lastWord}</p>
         
       </div>
