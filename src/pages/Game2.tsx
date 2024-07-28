@@ -1,22 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
 import './Game2.css';
 
-interface SpeechRecognition {
-  grammars: typeof SpeechGrammarList;
-  lang: string;
-  continuous: boolean;
-  interimResults: boolean;
-  maxAlternatives: number;
-  start(): void;
-  stop(): void
-}
+// interface SpeechRecognition {
+//   grammars: typeof SpeechGrammarList;
+//   lang: string;
+//   continuous: boolean;
+//   interimResults: boolean;
+//   maxAlternatives: number;
+//   start(): void;
+//   stop(): void
+// }
 
 const Game2 = () => {
   const [transcript, setTranscript] = useState('');
   const [lastWord, setLastWord] = useState('');
   const [listening, setListening] = useState(false);
-  const recognitionRef = useRef(null);
   const soundList = ['bark', 'quack', 'meow'];
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   const [completion, setCompletion] = useState(0);
 
@@ -39,9 +39,7 @@ const Game2 = () => {
 
       const speechRecognitionList = new SpeechGrammarList();
       speechRecognitionList.addFromString(grammar, 1);
-      recognitionRef.current.grammers = speechRecognitionList;
-
-
+      recognitionRef.current.grammars = speechRecognitionList;
       recognitionRef.current.onresult = (event) => {
         let interimTranscript = '';
         let finalTranscript = '';
