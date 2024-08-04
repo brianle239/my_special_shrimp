@@ -7,6 +7,7 @@ export default function Home() {
             <Link to="Test"> Test </Link>
             <Link to="Game1"> Game1 </Link>
             <Link to="Game2"> Game2</Link>
+            <Link to="Game3"> Game3</Link>
         </div>
     )
 }

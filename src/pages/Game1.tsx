@@ -51,19 +51,7 @@ export default function Game1() {
             }
         }
     }
-    const placeBigGroup = (groupNum: number, currentRow: number) => {
-        setTimeout(() => {
-            let bigGroupCurrentRef = bigGroupRef[groupNum].current as HTMLDivElement | null
-            if (bigGroupCurrentRef) {
-                bigGroupCurrentRef.style.top = `${(currentRow)*100}px`;
-                return;
-            }
-            else {
-                placeBigGroup(groupNum, currentRow);
-            }
-            
-        }, 20);
-    }
+    
     const reOrder = (clickedIndicies: number[], groupNum: number) => {
         console.log("reorder")
         let indicies: number[] = [];
@@ -90,13 +78,18 @@ export default function Game1() {
                 }
                               
             }
+            
+            let bigGroupCurrentRef = bigGroupRef[groupNum].current as HTMLDivElement | null;
+            if (bigGroupCurrentRef) {
+                bigGroupCurrentRef.style.top = `${(currentRow)*100}px`;
+                bigGroupCurrentRef.classList.remove('hideGroup');
+            }
+
             setTotalGroup(currentRow+1);
             const tempBigGroup = bigGroup;
             tempBigGroup[groupNum] = true;
             setBigGroup(tempBigGroup);
             setClickedTotal(0);
-
-            placeBigGroup(groupNum, currentRow);
         }, 1000);
         return () => clearTimeout(timeoutId);
 
@@ -107,7 +100,6 @@ export default function Game1() {
         for (let i = 15; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             switchPositions(i, j)
-        //   [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]; // Swap elements
         }
         setDivRefs(shuffledArray);
     }
@@ -144,14 +136,10 @@ export default function Game1() {
             }
             
         }
-        
-        console.log(clickedIndicies)
         setTimeout(() => {
-            
             let found = false;
             for (let j = 0; j < groups.length; j++) {
                 let sortedGroup = groups[j];
-                console.log(groups[j], clicked)
                 if (sortedGroup.every((element, index) => element === clicked[index])) {
                     found = true;
                     reOrder(clickedIndicies, j);
@@ -197,7 +185,7 @@ export default function Game1() {
                     {text[index]}
                 </div>
         ))}
-        {bigGroup[0] && <div className='bigCard group1' ref={bigGroupRef[0]}>
+        {<div className='bigCard group1 hideGroup' ref={bigGroupRef[0]}>
             <div className='bigCardName'>
                 Going to Bed
             </div>
@@ -205,7 +193,7 @@ export default function Game1() {
                 {groups[0].join(", ")}
             </div>
         </div>}
-        {bigGroup[1] && <div className='bigCard group2' ref={bigGroupRef[1]}>
+        {<div className='bigCard group2 hideGroup' ref={bigGroupRef[1]}>
         <div className='bigCardName'>
                 Hot Pot Ingredients
             </div>
@@ -213,7 +201,7 @@ export default function Game1() {
                 {groups[1].join(", ")}
             </div>
         </div>}
-        {bigGroup[2] && <div className='bigCard group3' ref={bigGroupRef[2]}>
+        {<div className='bigCard group3 hideGroup' ref={bigGroupRef[2]}>
         <div className='bigCardName'>
                 T-Shirts
             </div>
@@ -221,7 +209,7 @@ export default function Game1() {
                 {groups[2].join(", ")}
             </div>
         </div>}
-        {bigGroup[3] && <div className='bigCard group4' ref={bigGroupRef[3]}>
+        {<div className='bigCard group4 hideGroup' ref={bigGroupRef[3]}>
         <div className='bigCardName'>
                 You 🍤
             </div>

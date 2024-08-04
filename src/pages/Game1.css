@@ -108,6 +108,10 @@
     background-color: #BA81C5;
 }
 
+.hideGroup {
+    display: none;
+}
+
 .up_and_down {
     offset: path('M 95 45 L 95 35 L 95 45');
     offset-rotate: 0deg;

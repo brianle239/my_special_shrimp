@@ -1,17 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './Game2.css';
 
-// interface SpeechRecognition {
-//   grammars: typeof SpeechGrammarList;
-//   lang: string;
-//   continuous: boolean;
-//   interimResults: boolean;
-//   maxAlternatives: number;
-//   start(): void;
-//   stop(): void
-// }
-
-const Game2 = () => {
+export default function Game2() {
   const [transcript, setTranscript] = useState('');
   const [lastWord, setLastWord] = useState('');
   const [listening, setListening] = useState(false);
@@ -112,4 +102,3 @@ const Game2 = () => {
   );
 };
 
-export default Game2;
