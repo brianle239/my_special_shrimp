@@ -21,6 +21,8 @@
     background-color: white;
     background-size: cover;
     background-position: center;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, .25);
 }
 
 .rightCard {
@@ -35,6 +37,8 @@
     background-image: url('../assets/PompomC.png');
     background-size: cover;
     background-position: center;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, .25);
 }
 
 .leftTrapezoid {
@@ -43,8 +47,7 @@
     height: 420px;
     left: 140px;
     top: 50px;
-    background-color: #BAE2F0;
-    background-image: url("/pokadots.svg");
+    /* background-image: url("/stripes.svg"); */
     clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
     cursor: pointer;
     z-index: 0;
@@ -56,8 +59,7 @@
     height: 420px;
     left: 520px;
     top: 50px;
-    background-color: #FFEF95;
-    background-image: url("data:image/svg+xml,%3Csvg width='25' height='25' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='.75' fill-rule='evenodd'%3E%3Ccircle cx='5' cy='5' r='2.5'/%3E%3Ccircle cx='15' cy='15' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
+    /* background-image: url("data:image/svg+xml,%3Csvg width='25' height='25' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='.75' fill-rule='evenodd'%3E%3Ccircle cx='5' cy='5' r='2.5'/%3E%3Ccircle cx='15' cy='15' r='2.5'/%3E%3C/g%3E%3C/svg%3E"); */
     clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
     cursor: pointer;
     z-index: 1;
