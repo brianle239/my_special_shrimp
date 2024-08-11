@@ -39,30 +39,43 @@ export default function Game3() {
     const [topPictures, setTopPictures] = useState<string[]>([]);
     const [usedPictures, setUsedPictures] = useState<string[]>([]);
 
-    const [count, setCount] = useState(0);
-    const [stage, setStage] = useState(0);
+    let [shufflePictures, setShufflePictures] = useState<string[]>(Object.keys(polaroid_images));
 
-    const randomImage = (restrict: string | null) => {
-        // Currently have randodm and no dupes.
-        // Future:  have it so that its a set
-        let tempPolaroidImages = polaroid_images
-        
-        for (const key in tempPolaroidImages) {
-            if ( usedPictures.includes(key) || (restrict && key == restrict)) {
-                delete tempPolaroidImages[key];
-            }
+    const [count, setCount] = useState(0);
+    const [stage, setStage] = useState(-1);
+
+    const shuffle = () => {
+        let shuffledArray = [...shufflePictures]; // Create a copy of the array to avoid mutating the original array
+        for (let i = 15; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
         }
-        
-        let keys = Object.keys(tempPolaroidImages)  
-        let random_index: number = Math.floor(Math.random() * keys.length);
-        setUsedPictures(prevPic => [...prevPic, keys[random_index]]);
-        return polaroid_images[keys[random_index]];
+        setShufflePictures(shuffledArray);
+        console.log(shuffledArray, 1)
     }
+
+    // const randomImage = (restrict: string | null) => {
+    //     // Currently have randodm and no dupes.
+    //     // Future:  have it so that its a set
+    //     let tempPolaroidImages = polaroid_images
+        
+    //     for (const key in tempPolaroidImages) {
+    //         if ( usedPictures.includes(key) || (restrict && key == restrict)) {
+    //             delete tempPolaroidImages[key];
+    //         }
+    //     }
+        
+    //     let keys = Object.keys(tempPolaroidImages)  
+    //     let random_index: number = Math.floor(Math.random() * keys.length);
+    //     setUsedPictures(prevPic => [...prevPic, keys[random_index]]);
+    //     return polaroid_images[keys[random_index]];
+    // }
 
     const newImages = () => {
         // Changs both left and right images
-        let leftImage = randomImage(null);
-        let rightImage = randomImage(leftImage[3]);
+        console.log(shufflePictures);
+        let leftImage = polaroid_images[shufflePictures[count]];
+        let rightImage = polaroid_images[shufflePictures[count+1]];
 
         setLeftImage(leftImage);
         setRightImage(rightImage);
@@ -101,7 +114,7 @@ export default function Game3() {
             }
             // Waits to change image
             setTimeout(() => {
-                setRightImage(randomImage(null))
+                setRightImage(polaroid_images[shufflePictures[count]]);
             }, 100);
         }, 2450) 
 
@@ -120,7 +133,8 @@ export default function Game3() {
     }
 
     const transition = (side: string) => {
-        if (count == 4) {
+        
+        if (count%4 == 0 ) {
             
             if (side == 'left') {
                 setTopPictures(prevTopPictures => {
@@ -134,17 +148,20 @@ export default function Game3() {
                     return updatedPictures;
                   });
             }
-            setCount(0);
+            // setCount(0);
+            setStage(stage => stage+1);
             
         }
         else {
             slideTransition(side);
+            // setCount(count + 1);
             setCount(count + 1);
         }
+        
     }
 
     useEffect(() => {
-        console.log("used", usedPictures, "top", topPictures, count);
+        console.log("top", topPictures)
         if (usedPictures.length == Object.keys(polaroid_images).length ) {
             
             let x = usedPictures.filter(item => !topPictures.includes(item));
@@ -155,18 +172,24 @@ export default function Game3() {
             // Could set count to 0 here. 
             // So far, the favorite gets appended to topPictures (last element)
         }
-        else if (count == 0) {
-            newImages();
+        else if (stage == -1) {
+            shuffle();
+            setStage(0);
         }
-    }, [count]);
-
-    useEffect(() => {
-        if (stage == 1) {
-            newImages();
-            console.log("Finished Round 1", topPictures);
+        else {
+            
+            newImages();  
         }
     }, [stage]);
 
+    // useEffect(() => {
+    //     if (stage == 1) {
+    //         newImages();
+    //         console.log("Finished Round 1", topPictures);
+    //     }
+    // }, [stage]);
+
+    
     return (
         <div>
             <div className='backGround'>
