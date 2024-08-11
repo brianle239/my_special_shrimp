@@ -134,10 +134,6 @@ export default function Game3() {
                     return updatedPictures;
                   });
             }
-            
-            if (count == totalCount) {
-                return;
-            }
             setCount(0);
             
         }
@@ -149,25 +145,25 @@ export default function Game3() {
 
     useEffect(() => {
         console.log("used", usedPictures, "top", topPictures, count);
-        if (usedPictures.length == 16) {
+        if (usedPictures.length == Object.keys(polaroid_images).length ) {
             
             let x = usedPictures.filter(item => !topPictures.includes(item));
             setUsedPictures(() => {
                 return x;
             });
-            console.log("final", x);
             setStage(stage + 1);
+            // Could set count to 0 here. 
+            // So far, the favorite gets appended to topPictures (last element)
         }
         else if (count == 0) {
-            console.log("tes")
             newImages();
         }
-        console.log(usedPictures.length)
     }, [count]);
 
     useEffect(() => {
         if (stage == 1) {
-            newImages()
+            newImages();
+            console.log("Finished Round 1", topPictures);
         }
     }, [stage]);
 
