@@ -2,22 +2,19 @@
     position: relative;
     height: 75svh;
     width: 1000px;
-    background-color: #ffd18c;
+    /* background-color: #ffd18c; */
     padding: 0;
     margin: 0;
     border: 0;
 }
 
-.leftCard {
+.card {
     padding: 0;
     margin: 0;
     border: 0;
     position: relative;
     width: 280px;
     height: 330px;
-    left: 30px;
-    top: 45px;
-    /* background-image: url('../assets/poloroid_safe/Cinnamoroll.png'); */
     background-color: white;
     background-size: cover;
     background-position: center;
@@ -25,20 +22,32 @@
     box-shadow: 0px 4px 4px rgba(0, 0, 0, .25);
 }
 
+.leftCard {
+    left: 30px;
+    top: 45px;
+}
+
 .rightCard {
-    padding: 0;
-    margin: 0;
-    border: 0;
-    position: relative;
-    width: 280px;
-    height: 330px;
     left: 70px;
     top: 45px;
-    background-image: url('../assets/PompomC.png');
-    background-size: cover;
-    background-position: center;
-    background-color: rgba(0, 0, 0, 0);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, .25);
+}
+
+.leftCardHover:hover {
+    position: relative;
+    width: 290px;
+    height: 340px;
+    left: 25px;
+    top: 40px;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.35);
+}
+
+.rightCardHover:hover {
+    position: relative;
+    width: 290px;
+    height: 340px;
+    left: 65px;
+    top: 40px;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.35);
 }
 
 .leftTrapezoid {
