@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import './Game2.css';
 
 export default function Game2() {
+
   const [transcript, setTranscript] = useState('');
   const [lastWord, setLastWord] = useState('');
   const [listening, setListening] = useState(false);
@@ -9,6 +10,8 @@ export default function Game2() {
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   const [completion, setCompletion] = useState(0);
+
+  const animations = ['./animals/cat_walking.gif', './animals/dog_walking.gif']
 
   useEffect(() => {
     if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -87,17 +90,23 @@ export default function Game2() {
 
   return (
     <>
-    
-      <div>
+      <div className='animal'>
+
+        <div className='animalImage' style={{backgroundImage: `url(${animations[1]})`}}>
+
+        </div>
+      </div>
+      <div className='control'>
+        <p>{listening ? '...' : 'Lure in the Animal'}</p>
         <button onClick={startListening} disabled={listening}>Start Listening</button>
         <button onClick={stopListening} disabled={!listening}>Stop Listening</button>
-        <p>{listening ? 'Listening' : 'Click "Start Listening" to begin (Bark, Meow, or Quack)'}</p>
-        <p>Last Word: {lastWord}</p>
+        
+        {/* <p>Last Word: {lastWord}</p> */}
         
       </div>
-      <div className="progress-bar-container">
+      {/* <div className="progress-bar-container">
         <div className="progress-bar-fill" style={{width:`${completion}%`}}></div>
-      </div>
+      </div> */}
     </>
   );
 };

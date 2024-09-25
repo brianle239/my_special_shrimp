@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import './Game3.css';
+import '../components/loadingAnimation';
 
 type CharacterCollections = {
     [key: string]: string[];
@@ -203,6 +204,7 @@ export default function Game3() {
                     </div>
                 </div>
             </div>
+            
         </div>
 
     );

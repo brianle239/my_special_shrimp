@@ -16,3 +16,30 @@
     width: 50%;
     /* Set to 50% for 50% filled */
 }
+
+.control {
+    position: absolute;
+    /* background-color: bisque; */
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.animal {
+    position: relative;
+    margin: 0 auto;
+    align-items: center;
+    width: 250px;
+    height: 500px;
+    /* background-color: bisque; */
+}
+
+.animalImage {
+    margin: 0 auto;
+    align-items: center;
+    width: inherit;
+    height: inherit;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
