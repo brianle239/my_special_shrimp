@@ -6,12 +6,21 @@ export default function Game2() {
   const [transcript, setTranscript] = useState('');
   const [lastWord, setLastWord] = useState('');
   const [listening, setListening] = useState(false);
-  const soundList = ['bark', 'quack', 'meow'];
+  const soundList = [['bark', 'park'], ['meow', 'me'], ['quack', 'wack']];
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
+  // Animal animation vars
   const [completion, setCompletion] = useState(0);
-
-  const animations = ['./animals/cat_walking.gif', './animals/dog_walking.gif']
+  const [height, setHeight] = useState(100);
+  const [increment, setIncrement] = useState(-4);
+  const [isRunning, setIsRunning] = useState(false);
+  const [counter, setCounter] = useState(0); // Example game state
+  const intervalRef = useRef(null); // To store the interval ID
+  const incrementRef = useRef(increment);
+  const [backgroundState, setBackgroundState] = useState(animations[0]);
+  const [catBackgroundState, setCatBackgroundState] = useState(animations[2]);
+  const [animalIndex, setAnimalIndex] = useState(0);
+  const animations = ['./animals/dog_walking.gif', './animals/dog_backward.gif', './animals/cat_walking.gif', './animals/cat_backward.gif', './animals/duck_walking.gif', './animals/duck_backward.gif']
 
   useEffect(() => {
     if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -62,6 +71,7 @@ export default function Game2() {
     if (recognitionRef.current) {
       recognitionRef.current.start();
       setListening(true);
+      startGameLoop();
     }
   };
 
@@ -69,6 +79,7 @@ export default function Game2() {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
       setListening(false);
+      stopGameLoop();
     }
   };
 
@@ -78,28 +89,83 @@ export default function Game2() {
         let tempWord = transscriptList[transscriptList.length-1];
         console.log(tempWord)
         setLastWord(tempWord);
-        if (soundList.includes(tempWord)) {
+        if (soundList[animalIndex].includes(tempWord.toLowerCase())) {
           setCompletion(completion+10);
-          console.log(completion)
-        }
-        
+          increaseIncrement();
+          const interval = setInterval(() => {
+            decreaseIncrement();
+            clearInterval(interval);
+          }, 5000); // Adjust the interval time as needed
+          return;
+        } 
     }
     
-  }, [transcript]
-)
+  }, [transcript])
+
+  const increaseIncrement = () => {
+    setIncrement((prevIncrement) => {
+      const newIncrement = prevIncrement + 5;
+      incrementRef.current = newIncrement; // Update the ref with the new increment value
+      return newIncrement;
+    });
+  };
+
+  const decreaseIncrement = () => {
+    setIncrement((prevIncrement) => {
+      const newIncrement = prevIncrement - 5;
+      incrementRef.current = newIncrement; // Update the ref with the new increment value
+      return newIncrement;
+    });
+  };
+  // Function to start the game loop
+  const startGameLoop = () => {
+    if (intervalRef.current !== null) return; // Prevent multiple intervals
+    intervalRef.current = setInterval(() => {
+      setHeight((prev) => {
+        console.log(prev, incrementRef.current)
+        if (prev >= 500) {
+          stopGameLoop();
+        }
+        return prev + incrementRef.current;
+      });
+      if (incrementRef.current < 0) {
+        setBackgroundState(animations[(2*animalIndex)+1]);
+      }
+      else {
+        setBackgroundState(animations[(2*animalIndex)]);
+      }
+      
+
+    }, 500); // Adjust the interval time as needed (1000ms = 1 second)
+
+    setIsRunning(true); // Mark game as running
+  };
+
+  // Function to stop the game loop
+  const stopGameLoop = () => {
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+      setIsRunning(false); // Mark game as stopped
+      stopListening();
+      setBackgroundState(animations[2]);
+      setHeight(100);
+      setAnimalIndex((prev) => prev+1);
+    }
+  };
+  
 
   return (
     <>
       <div className='animal'>
 
-        <div className='animalImage' style={{backgroundImage: `url(${animations[1]})`}}>
-
-        </div>
+        <div className='animalImage' style={{backgroundImage: `url(${backgroundState})`, height: `${height}px`}}></div>
+        {/* <div className='animalImage' style={{backgroundImage: `url(${catBackgroundState})`, height: `${catHeight}px`}}></div> */}
       </div>
       <div className='control'>
-        <p>{listening ? '...' : 'Lure in the Animal'}</p>
+        <p>{listening ? `${lastWord}` : 'Lure in the Animal'}</p>
         <button onClick={startListening} disabled={listening}>Start Listening</button>
-        <button onClick={stopListening} disabled={!listening}>Stop Listening</button>
+        {/* <button onClick={stopListening} disabled={!listening}>Stop Listening</button> */}
         
         {/* <p>Last Word: {lastWord}</p> */}
         
