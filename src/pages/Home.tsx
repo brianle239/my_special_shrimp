@@ -1,16 +1,20 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import LoadingAnimation from '../components/loadingAnimation';
+import './Home.css';
 
 export default function Home() {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const option1 = queryParams.get('gamecomplete')
+
     return (
-        <div>
-            Yes
-            <Link to="Test"> Test </Link>
-            <Link to="Game1"> Game1 </Link>
-            <Link to="Game2"> Game2</Link>
-            <Link to="Game3"> Game3</Link>
-            <LoadingAnimation />
+        <div className='body'>
+            <LoadingAnimation/>
+            {option1 == null && <Link to="Game1" className='homeTitle'> Before Getting Closer</Link>}
+            {option1 == "1" && <Link to="Game2" className='homeTitle'> Before Confessing Our Love</Link>}
+            {option1 == "2" && <Link to="Game3" className='homeTitle'> Before We Miss Each Other</Link>}
+            
         </div>
     )
 }

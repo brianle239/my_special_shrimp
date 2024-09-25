@@ -1,26 +1,27 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Game2.css';
 
 export default function Game2() {
 
+  const navigate = useNavigate();
+
   const [transcript, setTranscript] = useState('');
   const [lastWord, setLastWord] = useState('');
   const [listening, setListening] = useState(false);
-  const soundList = [['bark', 'park'], ['meow', 'me'], ['quack', 'wack']];
+  const soundList = [['bark', 'park', 'woof'], ['meow', 'me'], ['quack', 'wack']];
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   // Animal animation vars
+  const animations = ['./animals/dog_walking.gif', './animals/dog_backward.gif', './animals/cat_walking.gif', './animals/cat_backward.gif', './animals/duck_walking.gif', './animals/duck_backward.gif', '', ''];
   const [completion, setCompletion] = useState(0);
   const [height, setHeight] = useState(100);
   const [increment, setIncrement] = useState(-4);
-  const [isRunning, setIsRunning] = useState(false);
-  const [counter, setCounter] = useState(0); // Example game state
-  const intervalRef = useRef(null); // To store the interval ID
+  const intervalRef = useRef<number | null>(null); // To store the interval ID
   const incrementRef = useRef(increment);
   const [backgroundState, setBackgroundState] = useState(animations[0]);
-  const [catBackgroundState, setCatBackgroundState] = useState(animations[2]);
   const [animalIndex, setAnimalIndex] = useState(0);
-  const animations = ['./animals/dog_walking.gif', './animals/dog_backward.gif', './animals/cat_walking.gif', './animals/cat_backward.gif', './animals/duck_walking.gif', './animals/duck_backward.gif']
+  
 
   useEffect(() => {
     if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
@@ -138,7 +139,6 @@ export default function Game2() {
 
     }, 500); // Adjust the interval time as needed (1000ms = 1 second)
 
-    setIsRunning(true); // Mark game as running
   };
 
   // Function to stop the game loop
@@ -146,13 +146,26 @@ export default function Game2() {
     if (intervalRef.current !== null) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
-      setIsRunning(false); // Mark game as stopped
       stopListening();
-      setBackgroundState(animations[2]);
+      
+      setBackgroundState(animations[(animalIndex+1)*2]);
       setHeight(100);
-      setAnimalIndex((prev) => prev+1);
+      setAnimalIndex((prev) => {
+        if (prev == 2) {
+          navigate('/?gamecomplete=2');
+        }
+        return prev+1});
+      
     }
   };
+
+  // useEffect(() => {
+  //   const timeoutId = setTimeout(() => {
+  //     if (animalIndex == 3) {
+  //       navigate('/?gamecomplete=2');
+  //     } 
+  //     }, 1000);        
+  // }, [animalIndex]);
   
 
   return (

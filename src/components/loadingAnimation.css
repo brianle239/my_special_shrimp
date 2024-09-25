@@ -2,14 +2,13 @@
     position: relative;
     justify-content: center;
     padding: 0;
-    margin: 0;
+    margin: 0 auto;
     border: 0;
     width: 500px;
     height: 200px;
 }
 
 img {
-    width: 100px;
     position: absolute;
     bottom: 0px;
 }
@@ -19,13 +18,14 @@ img {
 }
 
 .image1 {
-    left: 290px;
+    left: 240px;
+    width: 150px;
     animation: walkUpDown 1.5s ease-in-out .4s infinite;
     animation-fill-mode: forwards;
 }
 
 .image2 {
-    left: 165px;
+    left: 135px;
     width: 75px;
     bottom: 40px;
     transform: rotate(-40deg);
@@ -33,20 +33,20 @@ img {
 }
 
 .image3 {
-    left: 204px;
+    left: 174px;
     width: 45px;
     bottom: -1px;
     animation: walkUpDown 1.5s ease-in-out .1s infinite;
 }
 
 .image4 {
-    left: 280px;
+    left: 250px;
     width: 40px;
     animation: walkUpDown 1.5s ease-in-out .3s infinite;
 }
 
 .image5 {
-    left: 200px;
+    left: 170px;
     width: 127px;
     bottom: -5px;
     animation: walkUpDown 1.5s ease-in-out .2s infinite;

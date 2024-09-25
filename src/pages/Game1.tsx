@@ -1,8 +1,12 @@
 
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Game1.css';
+
 export default function Game1() {
-        
+    
+    const navigate = useNavigate();
+
     const [clickedTotal, setClickedTotal] = useState(0);
 
     const text: string[] = [
@@ -11,7 +15,6 @@ export default function Game1() {
         "Santa Cruz", "Skeleton", "My Melody", "Spy X Family",
         "Cute", "Perfect", "Pookie", "Warm"
     ]
-
     const groups: string[][] = [["Good", "Night", "Sweet", "Dreams"], ["Shrimp", "Lettuce", "Chilies", "Beef"], ["Santa Cruz", "Skeleton", "My Melody", "Spy X Family"], ["Cute", "Perfect", "Pookie", "Warm"]] 
     const parent = useRef(null);
     const [divRefs, setDivRefs] = useState(Array.from({ length: 16 }, () => useRef(null)));
@@ -162,6 +165,14 @@ export default function Game1() {
 
         }, 1100);
     }
+
+    useEffect(() => {
+        setTimeout(() => {
+            if (totalGroup == 4) {
+                navigate('/?gamecomplete=1');
+            } 
+          }, 1000);        
+      }, [totalGroup]);
 
     useLayoutEffect(() => {
         shuffle();

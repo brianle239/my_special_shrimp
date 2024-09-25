@@ -1,0 +1,9 @@
+.homeTitle {
+    font-size: 100px;
+    color: #CF7C7E;
+    white-space: nowrap;
+}
+
+.homeTitle:hover {
+    color: #e1a3a4;
+}
