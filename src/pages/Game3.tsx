@@ -158,13 +158,15 @@ export default function Game3() {
             // setCount(count + 1);
             setCount(count + 1);
         }
+        console.log(count);
         
     }
 
     useEffect(() => {
         console.log("top", topPictures)
+        
         if (usedPictures.length == Object.keys(polaroid_images).length ) {
-            
+            console.log("new images")
             let x = usedPictures.filter(item => !topPictures.includes(item));
             setUsedPictures(() => {
                 return x;
