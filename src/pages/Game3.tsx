@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Game3.css';
 import '../components/loadingAnimation';
 
@@ -7,6 +8,8 @@ type CharacterCollections = {
   };
 
 export default function Game3() {
+
+    const navigate = useNavigate();
     
     const leftTrap = useRef<HTMLDivElement>(null);
     const leftPic = useRef<HTMLDivElement>(null);
@@ -38,7 +41,6 @@ export default function Game3() {
     const [rightImage, setRightImage] = useState(polaroid_images["badBadTzMaru"]);
 
     const [topPictures, setTopPictures] = useState<string[]>([]);
-    const [usedPictures, setUsedPictures] = useState<string[]>([]);
 
     let [shufflePictures, setShufflePictures] = useState<string[]>(Object.keys(polaroid_images));
 
@@ -55,26 +57,9 @@ export default function Game3() {
         console.log(shuffledArray, 1)
     }
 
-    // const randomImage = (restrict: string | null) => {
-    //     // Currently have randodm and no dupes.
-    //     // Future:  have it so that its a set
-    //     let tempPolaroidImages = polaroid_images
-        
-    //     for (const key in tempPolaroidImages) {
-    //         if ( usedPictures.includes(key) || (restrict && key == restrict)) {
-    //             delete tempPolaroidImages[key];
-    //         }
-    //     }
-        
-    //     let keys = Object.keys(tempPolaroidImages)  
-    //     let random_index: number = Math.floor(Math.random() * keys.length);
-    //     setUsedPictures(prevPic => [...prevPic, keys[random_index]]);
-    //     return polaroid_images[keys[random_index]];
-    // }
-
     const newImages = () => {
         // Changs both left and right images
-        console.log(shufflePictures);
+        console.log(shufflePictures, count);
         let leftImage = polaroid_images[shufflePictures[count]];
         let rightImage = polaroid_images[shufflePictures[count+1]];
 
@@ -149,13 +134,10 @@ export default function Game3() {
                     return updatedPictures;
                   });
             }
-            // setCount(0);
             setStage(stage => stage+1);
-            
         }
         else {
             slideTransition(side);
-            // setCount(count + 1);
             setCount(count + 1);
         }
         console.log(count);
@@ -163,35 +145,34 @@ export default function Game3() {
     }
 
     useEffect(() => {
-        console.log("top", topPictures)
-        
-        if (usedPictures.length == Object.keys(polaroid_images).length ) {
-            console.log("new images")
-            let x = usedPictures.filter(item => !topPictures.includes(item));
-            setUsedPictures(() => {
-                return x;
-            });
-            setStage(stage + 1);
-            // Could set count to 0 here. 
-            // So far, the favorite gets appended to topPictures (last element)
+        if (count == 16) {
+            setShufflePictures(() => {
+                
+                return topPictures;
+            })
+            setCount(0);
+           
         }
         else if (stage == -1) {
             shuffle();
             setStage(0);
+            
         }
         else {
-            
-            newImages();  
+            newImages();
         }
     }, [stage]);
 
-    // useEffect(() => {
-    //     if (stage == 1) {
-    //         newImages();
-    //         console.log("Finished Round 1", topPictures);
-    //     }
-    // }, [stage]);
-
+    useEffect(() => {
+        if (shufflePictures.length == 4 && count == 0) {
+            
+            console.log(shufflePictures);
+            newImages();
+        }
+        else if (shufflePictures.length == 4 && stage == 5) {
+            navigate('/?gamecomplete=3');
+        }
+    }, [count, stage]);
     
     return (
         <div>
