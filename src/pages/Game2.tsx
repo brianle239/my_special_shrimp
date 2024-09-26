@@ -9,7 +9,7 @@ export default function Game2() {
   const [transcript, setTranscript] = useState('');
   const [lastWord, setLastWord] = useState('');
   const [listening, setListening] = useState(false);
-  const soundList = [['bark', 'park', 'woof'], ['meow', 'me'], ['quack', 'wack']];
+  const soundList = [['bark', 'park', 'woof', 'rough', 'ruff'], ['meow', 'me'], ['quack', 'wack']];
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   // Animal animation vars

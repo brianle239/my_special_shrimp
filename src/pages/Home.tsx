@@ -14,7 +14,7 @@ export default function Home() {
             {option1 == null && <Link to="Game1" className='homeTitle'> Before Getting Closer</Link>}
             {option1 == "1" && <Link to="Game2" className='homeTitle'> Before Confessing Our Love</Link>}
             {option1 == "2" && <Link to="Game3" className='homeTitle'> Before We Miss Each Other</Link>}
-            {option1 == "3" && <div className='happy' style={{backgroundImage: `url(./sanrio/happy.png)`}}> </div>}
+            {option1 == "3" && <div className='happy' style={{backgroundImage: `url(./animals/happy_birth_cin.png)`}}> </div>}
         </div>
     )
 }
