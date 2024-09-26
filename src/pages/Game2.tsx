@@ -127,6 +127,9 @@ export default function Game2() {
         if (prev >= 500) {
           stopGameLoop();
         }
+        else if (prev <= 50) {
+          return prev;
+        }
         return prev + incrementRef.current;
       });
       if (incrementRef.current < 0) {
