@@ -23,7 +23,7 @@ export default function Game3() {
         "handyodon": ['./poloroid_safe/Hangyodon.png', '#AEC3E0', './pokadots.svg', 'handyodon'],
         "twinStars": ['./poloroid_safe/Twin.png', '#F7BA8B', './stripes.svg', 'twinStars'],
         "tuxedosam": ['./poloroid_safe/Tuxedosam.png', '#BAE2F0', './pokadots.svg', 'tuxedosam'],
-        "badBadTzMaru": ['./poloroid_safe/BADBADTZMARU.png', '#BEB8C2', './stripes.svg', 'badBadTzMaru'],
+        "badBadTzMaru": ['./poloroid_safe/BADBADTZ-MARU.png', '#BEB8C2', './stripes.svg', 'badBadTzMaru'],
         "cogimyun": ['./poloroid_safe/Cogimyun.png', '#F2D4D2', './pokadots.svg', 'cogimyun'],
         'keroppi': ['./poloroid_safe/Keroppi.png', '#BDF4CA', './stripes.svg', 'keroppi'],
         'mySweetPiano': ['./poloroid_safe/MYSWEETPIANO.png', '#F7CCD5', './pokadots.svg', 'mySweetPiano'],
